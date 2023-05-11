@@ -11,7 +11,7 @@ export class Modal extends Component {
   }
 
   render() {
-    const { src, alt, onClose, onClickOverlay } = this.props;
+    const { src, alt, onClickOverlay } = this.props;
 
     return (
       <Overlay onClick={onClickOverlay}>
