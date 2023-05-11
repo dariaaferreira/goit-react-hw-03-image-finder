@@ -11,7 +11,6 @@ export const ImageGalleryItem = ({ webformatURL, largeImageURL, tags, onOpenModa
       <img
         src={webformatURL}
         alt={tags}
-        width='50px'
         className="gallery__image"
         onClick={handleClick}
       />
