@@ -48,7 +48,7 @@ export class App extends Component {
   };
 
   handleSearchSubmit = (query) => {
-    this.setState({ query: query });
+    this.setState({ query });
   };
 
   render() {
