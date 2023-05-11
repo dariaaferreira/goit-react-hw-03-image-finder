@@ -3,6 +3,9 @@ import { Searchbar } from "../Searchbar/Searchbar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Button } from "../Button/Button";
 import { Loader } from "../Loader/Loader";
+import { fetchImages } from "../../api/fetchApi";
+
+
 
 export class App extends Component {
   state = {
@@ -13,7 +16,7 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query) {
+    if (prevState.query !== this.state.query && this.state.query !== "") {
       this.setState({ images: [], page: 1 });
       this.fetchImages();
     }
@@ -22,15 +25,16 @@ export class App extends Component {
   fetchImages = () => {
     const { query, page } = this.state;
     this.setState({ isLoading: true });
-    fetch(
-      `https://pixabay.com/api/?q=${query}&page=${page}&key=34850970-a8e6c100d46912143d60db3a6&image_type=photo&orientation=horizontal&per_page=12`
-    )
-      .then((res) => res.json())
-      .then((data) => {
+    fetchImages(query, page)
+      .then((images) => {
         this.setState((prevState) => ({
-          images: [...prevState.images, ...data.hits],
+          images: [...prevState.images, ...images],
           isLoading: false,
         }));
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+        this.setState({ isLoading: false });
       });
   };
 
