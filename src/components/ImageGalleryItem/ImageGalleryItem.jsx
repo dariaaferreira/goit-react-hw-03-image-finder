@@ -1,12 +1,14 @@
 import React from "react";
 
+import { GalleryItem, GalleryItemImage } from "./ImageGalleryItem.styled";
+
 export const ImageGalleryItem = ({ webformatURL, tags, onOpenModal, image }) => (
-  <li className="ImageGalleryItem">
-    <img
+  <GalleryItem>
+    <GalleryItemImage
       src={webformatURL}
       alt={tags}
-      className="ImageGalleryItem-image"
+
       onClick={() => onOpenModal(image)}
     />
-  </li>
+  </GalleryItem>
 );

@@ -1,29 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { Loader } from "../Loader/Loader";
+import { LoadMoreBtn } from './Button.styled';
 
 export const Button = ({ onClick, isLoading }) => {
-  const [showLoader, setShowLoader] = useState(false);
-
-  const handleClick = () => {
-    setShowLoader(true);
-    setTimeout(() => {
-      setShowLoader(false);
-      onClick();
-    }, 500);
-  };
-
   return (
     <>
-      {!showLoader && onClick && (
-        <button
-          type="button"
-          onClick={handleClick}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Load more"}
-        </button>
+      {isLoading ? (
+        <Loader visible={isLoading} />
+      ) : (
+        <LoadMoreBtn onClick={onClick} type="button">
+          Load More
+        </LoadMoreBtn>
       )}
-      <Loader visible={showLoader} />
     </>
   );
 };

@@ -1,11 +1,9 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { Searchbar } from "../Searchbar/Searchbar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Button } from "../Button/Button";
-import { Loader } from "../Loader/Loader";
 import { fetchImages } from "../../api/fetchApi";
-
-
+import { Container } from "./App.styled";
 
 export class App extends Component {
   state = {
@@ -39,9 +37,13 @@ export class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState((prevState) => ({
-      page: prevState.page + 1,
-    }), this.fetchImages);
+    this.setState(
+      (prevState) => ({
+        page: prevState.page + 1,
+        isLoading: true,
+      }),
+      this.fetchImages
+    );
   };
 
   handleSearchSubmit = (query) => {
@@ -51,15 +53,15 @@ export class App extends Component {
   render() {
     const { images, isLoading } = this.state;
     return (
-      <div>
+      <>
         <Searchbar onSubmit={this.handleSearchSubmit} />
-        <ImageGallery images={images} />
-        {isLoading ? (
-          <Loader />
-        ) : images.length > 0 ? (
-          <Button onClick={this.handleLoadMore} isLoading={isLoading} />
-        ) : null}
-      </div>
+        <Container>
+          {images.length > 0 && <ImageGallery images={images} />}
+          {images.length > 0 && (
+            <Button onClick={this.handleLoadMore} isLoading={isLoading} />
+          )}
+        </Container>
+      </>
     );
   }
-}
+};

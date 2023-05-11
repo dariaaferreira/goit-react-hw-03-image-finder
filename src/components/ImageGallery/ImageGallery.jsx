@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { ImageGalleryItem } from "../ImageGalleryItem/ImageGalleryItem";
 import { Modal } from "../Modal/Modal";
 
+import { Gallery } from './ImageGallery.styled'
+
 export class ImageGallery extends Component {
   state = {
     showModal: false,
@@ -34,7 +36,7 @@ export class ImageGallery extends Component {
 
     return (
       <>
-        <ul className="ImageGallery">
+        <Gallery>
           {images.map((image) => (
             <ImageGalleryItem
               key={image.id}
@@ -44,7 +46,7 @@ export class ImageGallery extends Component {
               onOpenModal={this.handleOpenModal}
             />
           ))}
-        </ul>
+        </Gallery>
         {showModal && selectedImage && (
           <Modal
             src={selectedImage.largeImageURL}
