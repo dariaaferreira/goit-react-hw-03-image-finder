@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-export const ImageGalleryItem = ({ webformatURL, largeImageURL, tags, onOpenModal }) => {
+export const ImageGalleryItem = ({ webformatURL, tags, onOpenModal }) => {
 
   const handleClick = () => {
     onOpenModal();
