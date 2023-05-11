@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { ThreeDots } from "react-loader-spinner";
 
 export const Loader = ({ visible }) => {
@@ -19,4 +20,8 @@ export const Loader = ({ visible }) => {
       )}
     </>
   );
+};
+
+Loader.propTypes = {
+  visible: PropTypes.bool.isRequired,
 };

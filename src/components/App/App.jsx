@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { Searchbar } from "../Searchbar/Searchbar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Button } from "../Button/Button";
@@ -64,4 +65,19 @@ export class App extends Component {
       </>
     );
   }
+};
+
+App.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
+  query: PropTypes.string,
+  page: PropTypes.number,
+  isLoading: PropTypes.bool,
+  onSubmit: PropTypes.func.isRequired,
 };
