@@ -1,41 +1,24 @@
-import React, { useEffect } from "react";
-import * as basicLightbox from 'basiclightbox';
-import 'basiclightbox/dist/basicLightbox.min.css';
+import React, { Component } from "react";
+import { Overlay, ModalImg } from "./Modal.styled";
 
-export const Modal = ({ src, alt, onClose }) => {
+export class Modal extends Component {
+  componentDidMount() {
+    window.addEventListener("keydown", this.props.onKeyPress);
+  }
 
-  useEffect(() => {
-    const instance = basicLightbox.create(`
-      <img src="${src}" alt="${alt}" width="800" height="600">
-    `)
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.props.onKeyPress);
+  }
 
-    const handleKeyDown = (e) => {
-      if (e.code === 'Escape') {
-        onClose();
-      }
-    }
+  render() {
+    const { src, alt, onClose, onClickOverlay } = this.props;
 
-    const handleClick = (e) => {
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    }
-
-    instance.show()
-
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('click', handleClick);
-
-    return () => {
-      instance.close();
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('click', handleClick);
-    }
-  }, [src, alt, onClose]);
-
-  return (
-    <div className="overlay">
-      <div className="modal"></div>
-    </div>
-  );
-};
+    return (
+      <Overlay onClick={onClickOverlay}>
+        <ModalImg>
+          <img src={src} alt={alt} />
+        </ModalImg>
+      </Overlay>
+    );
+  }
+}

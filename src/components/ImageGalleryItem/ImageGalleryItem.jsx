@@ -1,17 +1,12 @@
-export const ImageGalleryItem = ({ webformatURL, tags, onOpenModal }) => {
+import React from "react";
 
-  const handleClick = () => {
-    onOpenModal();
-  };
-
-  return (
-    <li className="gallery__item">
-      <img
-        src={webformatURL}
-        alt={tags}
-        className="gallery__image"
-        onClick={handleClick}
-      />
-    </li>
-  );
-};
+export const ImageGalleryItem = ({ webformatURL, tags, onOpenModal, image }) => (
+  <li className="ImageGalleryItem">
+    <img
+      src={webformatURL}
+      alt={tags}
+      className="ImageGalleryItem-image"
+      onClick={() => onOpenModal(image)}
+    />
+  </li>
+);

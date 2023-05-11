@@ -16,7 +16,6 @@ export const Button = ({ onClick, isLoading }) => {
     <>
       {!showLoader && onClick && (
         <button
-          className="Button"
           type="button"
           onClick={handleClick}
           disabled={isLoading}
