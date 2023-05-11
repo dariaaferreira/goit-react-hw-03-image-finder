@@ -4,20 +4,31 @@ import { Overlay, ModalImg } from "./Modal.styled";
 
 export class Modal extends Component {
   componentDidMount() {
-    window.addEventListener("keydown", this.props.onKeyPress);
+    window.addEventListener("keydown", this.handleKeyPress);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("keydown", this.props.onKeyPress);
+    window.removeEventListener("keydown", this.handleKeyPress);
   }
 
-  render() {
-    const { src, alt, onClickOverlay } = this.props;
+  handleKeyPress = (e) => {
+    if (e.key === "Escape") {
+      this.props.onClose();
+    }
+  };
 
+  handleClickOverlay = (e) => {
+    if (e.target === e.currentTarget) {
+      this.props.onClose();
+    }
+  };
+
+  render() {
+    const { selectedImage } = this.props;
     return (
-      <Overlay onClick={onClickOverlay}>
+      <Overlay onClick={this.handleClickOverlay}>
         <ModalImg>
-          <img src={src} alt={alt} />
+          <img src={selectedImage.largeImageURL} alt={selectedImage.tags} />
         </ModalImg>
       </Overlay>
     );
@@ -25,9 +36,11 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
+  selectedImage: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }).isRequired,
   onClose: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired,
-  onClickOverlay: PropTypes.func.isRequired,
 };
