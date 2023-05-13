@@ -15,8 +15,8 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query && this.state.query !== "") {
-      this.setState({ images: [], page: 1 });
+    const { query, page } = this.state;
+    if (prevState.query !== query || prevState.page !== page) {
       this.fetchImages();
     }
   }
@@ -39,9 +39,7 @@ export class App extends Component {
 
   handleLoadMore = () => {
     const { page } = this.state;
-    this.setState({ page: page + 1, isLoading: true }, () => {
-      this.fetchImages();
-    });
+    this.setState({ page: page + 1, isLoading: true });
   };
 
   handleSearchSubmit = (query) => {
@@ -56,11 +54,12 @@ export class App extends Component {
         <Container>
           {images.length > 0 && <ImageGallery images={images} />}
           {isLoading && <Loader visible={isLoading} />}
-          {images.length > 0 && (
-            <Button onClick={this.handleLoadMore} isLoading={isLoading} />
+          {images.length > 0 && !isLoading && (
+            <Button onClick={this.handleLoadMore} />
           )}
         </Container>
       </>
     );
   }
+  
 };
