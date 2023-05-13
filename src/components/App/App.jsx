@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import { Searchbar } from "../Searchbar/Searchbar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Button } from "../Button/Button";
@@ -21,13 +20,14 @@ export class App extends Component {
     }
   }
 
-  fetchImages = () => {
-    const { query, page } = this.state;
+  fetchImages = (nextPage = 1) => {
+    const { query } = this.state;
     this.setState({ isLoading: true });
-    fetchImages(query, page)
+    fetchImages(query, nextPage)
       .then((images) => {
         this.setState((prevState) => ({
           images: [...prevState.images, ...images],
+          page: nextPage,
           isLoading: false,
         }));
       })
@@ -38,17 +38,12 @@ export class App extends Component {
   };
 
   handleLoadMore = () => {
-    this.setState(
-      (prevState) => ({
-        page: prevState.page + 1,
-        isLoading: true,
-      }),
-      this.fetchImages
-    );
+    const { page } = this.state;
+    this.fetchImages(page + 1);
   };
 
   handleSearchSubmit = (query) => {
-    this.setState({ query });
+    this.setState({ query, page: 1, images: [] });
   };
 
   render() {
@@ -58,26 +53,11 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleSearchSubmit} />
         <Container>
           {images.length > 0 && <ImageGallery images={images} />}
-          {images.length > 0 && (
+          {images.length > 0 && images.length % 12 === 0 && (
             <Button onClick={this.handleLoadMore} isLoading={isLoading} />
           )}
         </Container>
       </>
     );
   }
-};
-
-App.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-      tags: PropTypes.string.isRequired,
-    })
-  ),
-  query: PropTypes.string,
-  page: PropTypes.number,
-  isLoading: PropTypes.bool,
-  onSubmit: PropTypes.func.isRequired,
 };
