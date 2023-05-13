@@ -4,6 +4,7 @@ import { ImageGallery } from "../ImageGallery/ImageGallery";
 import { Button } from "../Button/Button";
 import { fetchImages } from "../../api/fetchApi";
 import { Container } from "./App.styled";
+import { Loader } from "../Loader/Loader";
 
 export class App extends Component {
   state = {
@@ -20,14 +21,13 @@ export class App extends Component {
     }
   }
 
-  fetchImages = (nextPage = 1) => {
-    const { query } = this.state;
+  fetchImages = () => {
+    const { query, page } = this.state;
     this.setState({ isLoading: true });
-    fetchImages(query, nextPage)
+    fetchImages(query, page)
       .then((images) => {
         this.setState((prevState) => ({
           images: [...prevState.images, ...images],
-          page: nextPage,
           isLoading: false,
         }));
       })
@@ -39,7 +39,9 @@ export class App extends Component {
 
   handleLoadMore = () => {
     const { page } = this.state;
-    this.fetchImages(page + 1);
+    this.setState({ page: page + 1, isLoading: true }, () => {
+      this.fetchImages();
+    });
   };
 
   handleSearchSubmit = (query) => {
@@ -53,7 +55,8 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleSearchSubmit} />
         <Container>
           {images.length > 0 && <ImageGallery images={images} />}
-          {images.length > 0 && images.length % 12 === 0 && (
+          {isLoading && <Loader visible={isLoading} />}
+          {images.length > 0 && (
             <Button onClick={this.handleLoadMore} isLoading={isLoading} />
           )}
         </Container>
