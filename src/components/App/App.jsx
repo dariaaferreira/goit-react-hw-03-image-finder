@@ -39,7 +39,7 @@ export class App extends Component {
 
   handleLoadMore = () => {
     const { page } = this.state;
-    this.setState({ page: page + 1, isLoading: true });
+    this.setState({ page: page + 1 });
   };
 
   handleSearchSubmit = (query) => {
